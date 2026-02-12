@@ -12,27 +12,81 @@ const TRUST_STATS = [
   { label: "Awards", value: "50+" },
 ];
 
-/* ---------- Section 2 — Domains & Value Chains ---------- */
+/* Healthcare filled icon SVG paths (viewBox 0 0 48 48) */
+const HEALTH_ICONS: { label: string; viewBox: string; path: string }[] = [
+  {
+    label: "Health Alt",
+    viewBox: "0 0 48 48",
+    path: "M6 9C6 7.34315 7.34315 6 9 6L39 6C40.6569 6 42 7.34315 42 9V39C42 40.6569 40.6569 42 39 42H9C7.34315 42 6 40.6569 6 39L6 9ZM21.9998 22V14L25.9998 14V22H33.9998L33.9998 26H25.9998V34H21.9998V26H13.9998L13.9998 22H21.9998Z",
+  },
+  {
+    label: "Blood Drop",
+    viewBox: "0 0 48 48",
+    path: "M24 4L23.3098 4.66021L23.3061 4.6638L23.2973 4.67227L23.2648 4.70366C23.2367 4.73095 23.1956 4.7709 23.1426 4.82303C23.0366 4.92728 22.8826 5.08029 22.6874 5.27827C22.297 5.67417 21.7417 6.25029 21.0763 6.97632C19.7465 8.42723 17.9719 10.4826 16.1951 12.8995C12.6815 17.6788 9 24.0809 9 30.0801C9 37.845 15.796 44 24 44C32.204 44 39 37.845 39 30.0801C39 24.0809 35.3185 17.6788 31.8049 12.8995C30.0281 10.4826 28.2535 8.42723 26.9237 6.97632C26.2583 6.25029 25.703 5.67417 25.3126 5.27827C25.1174 5.08029 24.9634 4.92728 24.8574 4.82303C24.8044 4.7709 24.7634 4.73095 24.7352 4.70366L24.7027 4.67227L24.6939 4.6638L24.6902 4.66021L24 4ZM15.4649 31.3985C15.2943 30.8716 14.7301 30.5833 14.2049 30.7545C13.6796 30.9257 13.3922 31.4915 13.5628 32.0183C14.3133 34.3349 15.7757 36.3536 17.7404 37.7853C19.7052 39.217 22.0714 39.9882 24.5 39.9882C25.0523 39.9882 25.5 39.5391 25.5 38.9852C25.5 38.4313 25.0523 37.9822 24.5 37.9822C22.4938 37.9822 20.5391 37.3452 18.916 36.1625C17.293 34.9798 16.0849 33.3121 15.4649 31.3985Z",
+  },
+  {
+    label: "Heart Cardiogram",
+    viewBox: "0 0 48 48",
+    path: "M9 19.0345C9 13.3091 12.8117 8 18.0312 8C21.6533 8 24.341 10.382 26 13.7611C27.6589 10.3822 30.3466 8 33.9688 8C39.1889 8 43 13.31 43 19.0345C43 31.2888 26 40 26 40C26 40 14.5487 34.4872 10.4431 25.4444H20.5848L22.1968 22.5788L24.0797 29.1692L28.4891 23.5H34V21.5H27.5109L24.9203 24.8308L22.8032 17.4212L19.4152 23.4444H9.67984C9.24643 22.0453 9 20.5731 9 19.0345Z",
+  },
+  {
+    label: "Medicine Bottle",
+    viewBox: "0 0 48 48",
+    path: "M9 7C9 5.34315 10.3431 4 12 4H36C37.6569 4 39 5.34315 39 7V15C39 16.6569 37.6569 18 36 18V41C36 42.6569 34.6569 44 33 44H15C13.3431 44 12 42.6569 12 41L12 18C10.3431 18 9 16.6569 9 15V7ZM16 16L16 6H12C11.4477 6 11 6.44772 11 7V15C11 15.5523 11.4477 16 12 16H16ZM18 16H23L23 6H18V16ZM25 16H30V6H25V16ZM32 16H36C36.5523 16 37 15.5523 37 15V7C37 6.44772 36.5523 6 36 6H32V16ZM23 30V35H25V30H30V28H25V23H23V28H18V30H23Z",
+  },
+  {
+    label: "Body",
+    viewBox: "0 0 48 48",
+    path: "M24 13C26.4853 13 28.5 10.9853 28.5 8.5C28.5 6.01472 26.4853 4 24 4C21.5147 4 19.5 6.01472 19.5 8.5C19.5 10.9853 21.5147 13 24 13ZM37.9201 15.4404C38.2292 16.5008 37.6201 17.6111 36.5596 17.9201C34.1842 18.6124 32.0379 19.1337 30 19.4812V30.9944L30 31V42C30 43.0693 29.1589 43.9495 28.0906 43.998C27.0224 44.0464 26.105 43.246 26.0082 42.1811L25.0082 31.1811C25.0027 31.1206 25 31.0602 25 31H23C23 31.0602 22.9973 31.1206 22.9918 31.1811L21.9918 42.1811C21.895 43.246 20.9776 44.0464 19.9094 43.998C18.8412 43.9495 18 43.0693 18 42L18 19.4443C15.9674 19.0938 13.8288 18.583 11.4653 17.9272C10.4009 17.6319 9.7775 16.5296 10.0728 15.4653C10.3682 14.4009 11.4704 13.7775 12.5348 14.0728C17.1431 15.3515 20.6058 15.9845 24.0087 15.9997C27.4047 16.0149 30.8587 15.4152 35.4404 14.0799C36.5009 13.7708 37.6111 14.3799 37.9201 15.4404Z",
+  },
+  {
+    label: "Healthcare IT",
+    viewBox: "0 0 48 48",
+    path: "M8.9999 10C7.89533 10 6.9999 10.8954 6.9999 12V31C6.9999 32.1046 7.89533 33 8.9999 33H38.9999C40.1045 33 40.9999 32.1046 40.9999 31V12C40.9999 10.8954 40.1045 10 38.9999 10H8.9999ZM22.4999 17V20.5H18.9999V22.5H22.4999V26H24.4999V22.5H27.9999V20.5H24.4999V17H22.4999ZM10.9999 29V14H36.9999V29H10.9999ZM8.9999 13C8.9999 12.4477 9.44761 12 9.9999 12H37.9999C38.5522 12 38.9999 12.4477 38.9999 13V30C38.9999 30.5523 38.5522 31 37.9999 31H9.9999C9.44761 31 8.9999 30.5523 8.9999 30V13ZM7.05991 31.4719C7.24242 31.1784 7.5635 31 7.90908 31H39.8822C40.2197 31 40.5345 31.1703 40.7192 31.4528L43.9883 36.4528C44.4231 37.1179 43.946 38 43.1513 38H4.79944C4.015 38 3.53599 37.138 3.95028 36.4719L7.05991 31.4719Z",
+  },
+];
 
-interface ProductSolution {
-  name: string;
-  chainStep: number; // index into the value chain this chip relates to
-}
+/* Orbit config */
+const ORBIT_RADIUS_PCT = 40; // matches --orbit-radius in CSS (40cqi ≈ 40%)
+const HUB_RADIUS_PCT = 8;    // hub visual radius in %
+const ICON_RADIUS_PCT = 3.5; // icon container half-size in %
+
+/* Pre-computed orbital node positions (avoids hydration mismatch from inline Math)
+   CSS orbit animation starts at 3 o'clock (translateX = right), so we add 90° to
+   align SVG spoke endpoints with the actual CSS icon positions. */
+const ORBITAL_NODES = [0, 60, 120, 180, 240, 300].map((deg, i) => {
+  const svgDeg = deg + 90; // offset: CSS 0° = right, SVG 0° = top
+  const rad = (svgDeg * Math.PI) / 180;
+  const cx = Math.round((50 + ORBIT_RADIUS_PCT * Math.cos(rad)) * 100) / 100;
+  const cy = Math.round((50 + ORBIT_RADIUS_PCT * Math.sin(rad)) * 100) / 100;
+  return {
+    deg,
+    cx,
+    cy,
+    icon: HEALTH_ICONS[i],
+  };
+});
+
+/* ---------- Section 2 — Healthcare Domains ---------- */
 
 interface Domain {
   id: string;
-  title: string;
-  tagline: string;
-  chain: string[];
-  products: ProductSolution[];
+  name: string;
+  headline: string;
+  description: string;
+  valueChainSteps: string[];
+  solutions: string[];
+  imageSrc: string; // TODO: replace with real assets
 }
 
 const DOMAINS: Domain[] = [
   {
     id: "hospitals",
-    title: "Hospitals",
-    tagline: "Efficient, Connected Care Operations",
-    chain: [
+    name: "Hospitals",
+    headline: "Efficient, Connected Care Operations",
+    description:
+      "Enabling coordinated care and efficient operations by connecting clinical systems, workflows, and data.",
+    valueChainSteps: [
       "Patient Registration",
       "Diagnosis",
       "Treatment",
@@ -40,22 +94,22 @@ const DOMAINS: Domain[] = [
       "Discharge",
       "Follow-up",
     ],
-    products: [
-      { name: "Unified Case Tracking", chainStep: 0 },
-      { name: "Clinical Insights Dashboard", chainStep: 1 },
-      { name: "Treatment Protocol Engine", chainStep: 2 },
-      { name: "Revenue Cycle Optimizer", chainStep: 3 },
-      { name: "Discharge Planning Suite", chainStep: 4 },
-      { name: "Patient Engagement Hub", chainStep: 5 },
-      { name: "Bed Management System", chainStep: 0 },
-      { name: "Interoperability Layer", chainStep: 2 },
+    solutions: [
+      "Advanced EMR Systems",
+      "Patient Enquiry Tracking System",
+      "OPD & IPD Dashboards",
+      "Hospital Operations Dashboard",
+      "Care Workflow Automation",
     ],
+    imageSrc: "/images/domains/hospitals.png", // TODO: add asset
   },
   {
     id: "pharma",
-    title: "Pharmaceuticals",
-    tagline: "Innovation → Manufacturing → Market",
-    chain: [
+    name: "Pharmaceuticals",
+    headline: "Innovation \u2192 Manufacturing \u2192 Market",
+    description:
+      "Supporting faster research and compliant operations by unifying data across trials, supply, and regulatory systems.",
+    valueChainSteps: [
       "Pre-clinical Research",
       "Clinical Trials",
       "Drug Approval",
@@ -63,22 +117,22 @@ const DOMAINS: Domain[] = [
       "Supply Chain & Sales",
       "Post-Market",
     ],
-    products: [
-      { name: "Trial Data Intelligence", chainStep: 1 },
-      { name: "Regulatory Submission Tracker", chainStep: 2 },
-      { name: "Batch Quality Monitor", chainStep: 3 },
-      { name: "Supply Chain Orchestrator", chainStep: 4 },
-      { name: "Adverse Event Tracker", chainStep: 5 },
-      { name: "Research Collaboration Hub", chainStep: 0 },
-      { name: "Compliance Reporting", chainStep: 2 },
-      { name: "Demand Forecasting Engine", chainStep: 4 },
+    solutions: [
+      "Trial Data Management & Insights",
+      "Regulatory Document Automation",
+      "Pharma Demand & Logistics Forecasting",
+      "Quality & Compliance Automation",
+      "Supply Visibility Dashboards",
     ],
+    imageSrc: "/images/domains/pharma.png", // TODO: add asset
   },
   {
     id: "devices",
-    title: "Medical Devices",
-    tagline: "Certified Design-to-Deployment",
-    chain: [
+    name: "Medical Devices",
+    headline: "Certified Design-to-Deployment",
+    description:
+      "Improving care delivery by aligning device data, reporting, and analytics.",
+    valueChainSteps: [
       "Need Identification",
       "Medical Device Design",
       "Validation & Approval",
@@ -87,22 +141,22 @@ const DOMAINS: Domain[] = [
       "Installation",
       "After Sales",
     ],
-    products: [
-      { name: "Requirements Traceability", chainStep: 0 },
-      { name: "Design Control Platform", chainStep: 1 },
-      { name: "FDA/CE Submission Manager", chainStep: 2 },
-      { name: "Manufacturing Execution", chainStep: 3 },
-      { name: "Logistics & Distribution", chainStep: 4 },
-      { name: "Field Service Management", chainStep: 6 },
-      { name: "Device Telemetry Hub", chainStep: 5 },
-      { name: "Quality Management System", chainStep: 2 },
+    solutions: [
+      "Design Lifecycle Automation",
+      "Validation & Test Automation",
+      "Compliance Documentation Control",
+      "Manufacturing & QA Dashboards",
+      "Service & Installation Workflow Tools",
     ],
+    imageSrc: "/images/domains/devices.png", // TODO: add asset
   },
   {
     id: "insurance",
-    title: "Health Insurance",
-    tagline: "Risk → Coverage → Claims",
-    chain: [
+    name: "Health Insurance",
+    headline: "Risk \u2192 Coverage \u2192 Claims",
+    description:
+      "Driving consistent, efficient decisions by integrating claims, risk, government care initiatives, and member data across operations.",
+    valueChainSteps: [
       "Policy Design",
       "Customer Onboarding",
       "Policy Administration",
@@ -110,22 +164,22 @@ const DOMAINS: Domain[] = [
       "Fraud Control",
       "Renewal",
     ],
-    products: [
-      { name: "Risk Scoring Engine", chainStep: 0 },
-      { name: "Digital Onboarding Portal", chainStep: 1 },
-      { name: "Claims Workflow Automation", chainStep: 3 },
-      { name: "Fraud Detection AI", chainStep: 4 },
-      { name: "Member Self-Service Portal", chainStep: 2 },
-      { name: "Renewal Intelligence", chainStep: 5 },
-      { name: "Provider Network Analytics", chainStep: 0 },
-      { name: "Compliance Reporting", chainStep: 2 },
+    solutions: [
+      "Customer Onboarding & Liability Assessment",
+      "Personalized Member Dashboard",
+      "Automated Claims & Billing System",
+      "Claim Investigation Case Management",
+      "Risk & Compliance Analytics",
     ],
+    imageSrc: "/images/domains/insurance.png", // TODO: add asset
   },
   {
     id: "diagnostics",
-    title: "Diagnostics",
-    tagline: "Accurate Results, Faster Turnaround",
-    chain: [
+    name: "Diagnostics",
+    headline: "Accurate Results, Faster Turnaround",
+    description:
+      "Reliable test execution, fast turnaround, and system-level integration, connecting laboratory systems with care networks.",
+    valueChainSteps: [
       "Care Network Tie-ups",
       "Test Order Intake",
       "Sample Collection",
@@ -133,16 +187,14 @@ const DOMAINS: Domain[] = [
       "Testing",
       "Report Delivery",
     ],
-    products: [
-      { name: "Network Partnership Portal", chainStep: 0 },
-      { name: "Order Management System", chainStep: 1 },
-      { name: "Sample Tracking & LIMS", chainStep: 2 },
-      { name: "Revenue Cycle Manager", chainStep: 3 },
-      { name: "Lab Automation Suite", chainStep: 4 },
-      { name: "Report Delivery Engine", chainStep: 5 },
-      { name: "Capacity & Demand Forecasting", chainStep: 4 },
-      { name: "Interoperability Layer", chainStep: 0 },
+    solutions: [
+      "Lab Order & Intake Automation",
+      "Sample Tracking System",
+      "Billing Workflow Automation",
+      "Lab Operations Dashboard",
+      "Report Delivery & Integration Layer",
     ],
+    imageSrc: "/images/domains/diagnostics.png", // TODO: add asset
   },
 ];
 
@@ -165,10 +217,15 @@ const OUTCOME_STATS = [
 
 /* ---------- Section 4 — IT Services ---------- */
 
+interface ServiceBullet {
+  name: string;
+  description: string;
+}
+
 interface ServiceCard {
   title: string;
   oneLiner: string;
-  bullets: string[];
+  bullets: ServiceBullet[];
 }
 
 const SERVICE_CARDS: ServiceCard[] = [
@@ -176,36 +233,36 @@ const SERVICE_CARDS: ServiceCard[] = [
     title: "AI, Security, Data & Intelligence Enablement",
     oneLiner: "From risk and uncertainty to trusted, informed operations",
     bullets: [
-      "AI & Advanced Analytics",
-      "Data Analytics & Business Intelligence",
-      "Cybersecurity & Compliance Services",
+      { name: "AI & Advanced Analytics", description: "Applies intelligence within workflows to support decisions, efficiency, and outcome improvement." },
+      { name: "Data Analytics & Business Intelligence", description: "Improves visibility across clinical and operational functions through reliable data insights." },
+      { name: "Cybersecurity & Compliance Services", description: "Protects sensitive healthcare data while meeting regulatory and privacy requirements." },
     ],
   },
   {
     title: "Managed IT & Clinical Systems Operations",
     oneLiner: "From operational burden to reliable, always-on systems",
     bullets: [
-      "Managed IT Services & Outsourcing",
-      "EHR / EMR Implementation & Support",
-      "Ongoing System Optimization",
+      { name: "Managed IT Services & Outsourcing", description: "Ensure continuity across core healthcare systems by operating, supporting, and optimizing them over time." },
+      { name: "EHR / EMR Implementation & Support", description: "Enables consistent care delivery by implementing, integrating, and maintaining clinical record systems." },
+      { name: "Ongoing System Optimization", description: "Improves performance and usability as clinical, regulatory, and operational needs evolve." },
     ],
   },
   {
     title: "Cloud, Platform & Integration Modernization",
     oneLiner: "From rigid infrastructure to scalable, connected platforms",
     bullets: [
-      "Cloud Migration & Managed Cloud",
-      "Interoperability & Integration Services",
-      "Platform & Infrastructure Modernization",
+      { name: "Cloud Migration & Managed Cloud", description: "Transitions healthcare systems to resilient cloud environments with ongoing operational oversight." },
+      { name: "Interoperability & Integration Services", description: "Connects applications and data across systems to reduce silos and manual work." },
+      { name: "Platform & Infrastructure Modernization", description: "Updates legacy platforms to support scale, reliability, and future digital initiatives." },
     ],
   },
   {
     title: "Lifecycle Operations & System Governance",
     oneLiner: "From point solutions to systems that endure and improve",
     bullets: [
-      "Continuous Operations & Reliability",
-      "Lifecycle Ownership & Optimization",
-      "Governance, Change & Readiness",
+      { name: "Continuous Operations & Reliability", description: "Maintains system stability, performance, and compliance as environments change." },
+      { name: "Lifecycle Ownership & Optimization", description: "Manages systems across implementation, scale, upgrades, and long-term evolution." },
+      { name: "Governance, Change & Readiness", description: "Establishes controls and operating models that support safe adaptation and sustained outcomes." },
     ],
   },
 ];
@@ -248,12 +305,18 @@ const OTHER_INDUSTRIES = [
 
 /* ---------- Nav links ---------- */
 
-const NAV_LINKS = [
-  "Services",
-  "Platforms & Products",
-  "Partnerships",
-  "About",
-  "Careers",
+interface NavLink {
+  label: string;
+  hasDropdown?: boolean;
+}
+
+const NAV_LINKS: NavLink[] = [
+  { label: "Home" },
+  { label: "Services", hasDropdown: true },
+  { label: "Platform And Products", hasDropdown: true },
+  { label: "Partnerships", hasDropdown: true },
+  { label: "About Us", hasDropdown: true },
+  { label: "Careers", hasDropdown: true },
 ];
 
 /* ==========================================================================
@@ -262,29 +325,39 @@ const NAV_LINKS = [
 
 /* ---- Navigation ---- */
 
+function ChevronDown() {
+  return (
+    <svg className="w-3.5 h-3.5 ml-1 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+    </svg>
+  );
+}
+
 function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-navy-950/90 backdrop-blur-md border-b border-white/5">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200/60">
       <div className="mx-auto max-w-[1320px] px-6 flex items-center justify-between h-16">
         {/* Logo */}
-        <a href="#" className="flex items-center gap-2 shrink-0">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-navy-400 to-navy-300" />
-          <span className="text-white font-bold text-lg tracking-tight">
-            Netlink
-          </span>
+        <a href="#" className="flex items-center shrink-0">
+          <img
+            src="/netlink-logo.png"
+            alt="Netlink"
+            className="h-10 w-auto"
+          />
         </a>
 
         {/* Desktop links */}
-        <div className="hidden lg:flex items-center gap-8">
+        <div className="hidden lg:flex items-center gap-1">
           {NAV_LINKS.map((link) => (
             <a
-              key={link}
+              key={link.label}
               href="#"
-              className="text-sm text-gray-300 hover:text-white transition-colors"
+              className="flex items-center px-3.5 py-2 text-sm text-gray-600 hover:text-gray-900 transition-colors rounded-md"
             >
-              {link}
+              {link.label}
+              {link.hasDropdown && <ChevronDown />}
             </a>
           ))}
         </div>
@@ -293,13 +366,16 @@ function Navbar() {
         <div className="flex items-center gap-4">
           <a
             href="#contact"
-            className="hidden sm:inline-flex items-center px-5 py-2 rounded-lg bg-navy-500 hover:bg-navy-400 text-white text-sm font-semibold transition-colors"
+            className="hidden sm:inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-navy-500 hover:bg-navy-400 text-white text-sm font-semibold transition-colors"
           >
             Let&apos;s Talk
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
           </a>
           <button
             aria-label="Toggle menu"
-            className="lg:hidden text-gray-300 hover:text-white"
+            className="lg:hidden text-gray-600 hover:text-gray-900"
             onClick={() => setMobileOpen(!mobileOpen)}
           >
             <svg
@@ -330,22 +406,26 @@ function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="lg:hidden border-t border-white/5 bg-navy-950/95 backdrop-blur-md">
-          <div className="mx-auto max-w-[1320px] px-6 py-4 flex flex-col gap-3">
+        <div className="lg:hidden border-t border-gray-200/60 bg-white">
+          <div className="mx-auto max-w-[1320px] px-6 py-4 flex flex-col gap-1">
             {NAV_LINKS.map((link) => (
               <a
-                key={link}
+                key={link.label}
                 href="#"
-                className="text-sm text-gray-300 hover:text-white transition-colors py-1"
+                className="flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors py-2.5"
               >
-                {link}
+                {link.label}
+                {link.hasDropdown && <ChevronDown />}
               </a>
             ))}
             <a
               href="#contact"
-              className="sm:hidden inline-flex items-center justify-center px-5 py-2 rounded-lg bg-navy-500 hover:bg-navy-400 text-white text-sm font-semibold transition-colors mt-2"
+              className="sm:hidden inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-lg bg-navy-500 hover:bg-navy-400 text-white text-sm font-semibold transition-colors mt-3"
             >
               Let&apos;s Talk
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
             </a>
           </div>
         </div>
@@ -358,93 +438,109 @@ function Navbar() {
 
 function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center bg-gradient-to-b from-navy-950 via-navy-900 to-navy-800 overflow-hidden pt-16">
-      {/* Subtle radial glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full bg-navy-500/[0.07] blur-[120px]" />
-      </div>
-
-      <div className="relative mx-auto max-w-[1320px] px-6 w-full grid lg:grid-cols-2 gap-12 lg:gap-20 items-center py-20">
+    <section className="relative min-h-screen flex items-center bg-white overflow-hidden pt-16">
+      <div className="relative mx-auto max-w-[1320px] px-6 w-full grid lg:grid-cols-2 gap-12 lg:gap-20 items-center py-20 -mt-10">
         {/* Left — Copy */}
         <div className="max-w-xl">
-          <p className="text-navy-300 text-sm font-semibold tracking-widest uppercase mb-5">
-            Healthcare &middot; AI &middot; Ecosystem
-          </p>
-          <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-white leading-[1.1] tracking-tight">
+          <h1 className="text-3xl sm:text-[2.7rem] lg:text-[3.15rem] font-extrabold text-gray-900 leading-[0.95] tracking-tight">
             Make healthcare work as a{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-navy-300 to-blue-400">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-navy-500 to-blue-500">
               connected ecosystem
             </span>
           </h1>
-          <p className="mt-6 text-lg text-gray-400 leading-relaxed max-w-lg">
+          <p className="mt-6 text-lg text-gray-500 leading-relaxed max-w-lg">
             Embedding AI into the framework, so it can sense, learn, and respond
             as one.
           </p>
-          <div className="mt-10 flex flex-wrap gap-4">
+          <div className="mt-10 mb-16">
             <a
               href="#ecosystem"
               className="inline-flex items-center px-7 py-3.5 rounded-lg bg-navy-500 hover:bg-navy-400 text-white font-semibold transition-colors text-sm"
             >
               View use cases
             </a>
-            <a
-              href="#contact"
-              className="inline-flex items-center px-7 py-3.5 rounded-lg border border-white/20 hover:border-white/40 text-white font-semibold transition-colors text-sm"
-            >
-              Let&apos;s talk
-            </a>
           </div>
         </div>
 
-        {/* Right — Visual placeholder */}
+        {/* Right — Orbit illustration */}
         <div className="relative flex items-center justify-center" aria-hidden="true">
-          <div className="w-full max-w-md aspect-square relative">
-            {/* Outer ring */}
-            <div className="absolute inset-0 rounded-full border border-navy-600/40" />
-            <div className="absolute inset-6 rounded-full border border-navy-500/30" />
-            <div className="absolute inset-12 rounded-full border border-navy-400/20" />
-            {/* Center glow */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-navy-400/40 to-navy-300/20 blur-sm" />
-              <div className="absolute w-16 h-16 rounded-full bg-gradient-to-br from-navy-400 to-blue-500 opacity-60" />
+          {/* Blue gradient background */}
+          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-100/60 via-blue-50/40 to-transparent blur-2xl" />
+          <div className="w-full max-w-md aspect-square relative" style={{ containerType: "inline-size" }}>
+
+            {/* Layer 1 — Dashed orbit rings (spin with everything) */}
+            <div className="absolute inset-0 animate-spin-slow" style={{ zIndex: 0 }}>
+              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#93C5FD" strokeWidth="0.4" strokeDasharray="4 6" opacity="0.4" />
+                <circle cx="50" cy="50" r="28" fill="none" stroke="#93C5FD" strokeWidth="0.3" strokeDasharray="3 5" opacity="0.25" />
+                <circle cx="50" cy="50" r="16" fill="none" stroke="#93C5FD" strokeWidth="0.25" strokeDasharray="2 4" opacity="0.15" />
+              </svg>
             </div>
-            {/* Orbital nodes */}
-            {[0, 60, 120, 180, 240, 300].map((deg) => (
+
+            {/* Layer 2 — Rotating connector spokes (hub mask hides center overlap; lines extend to full orbit radius so icons naturally sit on endpoints) */}
+            <div className="absolute inset-0 animate-spin-slow" style={{ zIndex: 1 }}>
+              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100">
+                <defs>
+                  <mask id="hub-mask">
+                    <rect width="100" height="100" fill="white" />
+                    <circle cx="50" cy="50" r="9" fill="black" />
+                  </mask>
+                </defs>
+                <g mask="url(#hub-mask)">
+                  {ORBITAL_NODES.map((node) => (
+                    <line
+                      key={node.deg}
+                      x1="50"
+                      y1="50"
+                      x2={node.cx}
+                      y2={node.cy}
+                      stroke="#93C5FD"
+                      strokeWidth="0.5"
+                      opacity="0.4"
+                    />
+                  ))}
+                </g>
+              </svg>
+            </div>
+
+            {/* Layer 3 — Hub core (sits above connectors) */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16" style={{ zIndex: 2 }}>
+              <div className="w-full h-full rounded-full bg-gradient-to-br from-navy-400 to-blue-500 shadow-xl shadow-blue-500/25 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-white/20" />
+              </div>
+            </div>
+
+            {/* Layer 4 — Healthcare icons (always upright, on top) */}
+            {ORBITAL_NODES.map((node, i) => (
               <div
-                key={deg}
-                className="absolute w-3.5 h-3.5 rounded-full bg-navy-300/70"
-                style={{
-                  top: `${50 - 42 * Math.cos((deg * Math.PI) / 180)}%`,
-                  left: `${50 + 42 * Math.sin((deg * Math.PI) / 180)}%`,
-                  transform: "translate(-50%, -50%)",
-                }}
-              />
+                key={node.deg}
+                className="animate-orbit-upright w-[62px] h-[62px]"
+                style={{ animationDelay: `${-(i * 31) / 6}s`, zIndex: 3 }}
+              >
+                <div className="w-full h-full rounded-2xl bg-white border border-gray-200/80 flex items-center justify-center shadow-lg shadow-gray-300/40">
+                  <svg
+                    className="w-7 h-7"
+                    viewBox={node.icon.viewBox}
+                    fill="#1d4ed8"
+                    stroke="none"
+                  >
+                    <path fillRule="evenodd" clipRule="evenodd" d={node.icon.path} />
+                  </svg>
+                </div>
+              </div>
             ))}
-            {/* Connecting lines */}
-            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100">
-              {[0, 60, 120, 180, 240, 300].map((deg) => (
-                <line
-                  key={deg}
-                  x1="50"
-                  y1="50"
-                  x2={50 + 42 * Math.sin((deg * Math.PI) / 180)}
-                  y2={50 - 42 * Math.cos((deg * Math.PI) / 180)}
-                  stroke="rgba(96,165,250,0.15)"
-                  strokeWidth="0.3"
-                />
-              ))}
-            </svg>
+
           </div>
         </div>
       </div>
 
       {/* Trust strip */}
-      <div className="absolute bottom-0 inset-x-0 border-t border-white/5 bg-navy-950/60 backdrop-blur-sm">
+      <div className="absolute bottom-0 inset-x-0 border-t border-gray-200/60 bg-white/60 backdrop-blur-sm">
         <div className="mx-auto max-w-[1320px] px-6 py-5 flex flex-wrap items-center justify-center gap-8 sm:gap-16">
-          {TRUST_STATS.map((s) => (
-            <div key={s.label} className="flex items-baseline gap-2">
-              <span className="text-2xl font-bold text-white">{s.value}</span>
-              <span className="text-sm text-gray-400">{s.label}</span>
+          {OUTCOME_STATS.map((s) => (
+            <div key={s.value} className="flex flex-col items-center">
+              <span className="text-2xl font-bold text-gray-900">{s.value}</span>
+              <span className="text-sm text-gray-500 capitalize">{s.label}</span>
             </div>
           ))}
         </div>
@@ -453,136 +549,109 @@ function Hero() {
   );
 }
 
-/* ---- Section 2: Ecosystem Map ---- */
+/* ---- Section 2: Domain Module ---- */
 
 function EcosystemMap() {
   const [activeDomain, setActiveDomain] = useState(0);
-  const [hoveredChip, setHoveredChip] = useState<number | null>(null);
-  const [hoveredStep, setHoveredStep] = useState<number | null>(null);
-
   const domain = DOMAINS[activeDomain];
 
-  const activeStepFromChip =
-    hoveredChip !== null ? domain.products[hoveredChip]?.chainStep : null;
-
-  const isStepHighlighted = (stepIdx: number) =>
-    stepIdx === hoveredStep || stepIdx === activeStepFromChip;
-
   return (
-    <section
-      id="ecosystem"
-      className="relative bg-gradient-to-b from-navy-900 to-navy-950 py-24 sm:py-32"
-    >
+    <section id="ecosystem" className="relative bg-[#F5F7FA] pt-10 sm:pt-14 pb-14 sm:pb-20 mt-[30px]">
       <div className="mx-auto max-w-[1320px] px-6">
         {/* Header */}
-        <div className="max-w-2xl mb-16">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight">
+        <div className="max-w-2xl mx-auto text-center mb-10">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight">
             Inside the Healthcare Ecosystem
           </h2>
-          <p className="mt-4 text-gray-400 text-lg leading-relaxed">
+          <p className="mt-4 text-gray-500 text-lg leading-relaxed">
             An integrated view of how Netlink touches multiple aspects of the
             care framework.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-[280px_1fr] gap-10">
-          {/* Left — Domain list */}
-          <div className="flex flex-col gap-2">
-            {DOMAINS.map((d, i) => (
-              <button
-                key={d.id}
-                onClick={() => {
-                  setActiveDomain(i);
-                  setHoveredChip(null);
-                  setHoveredStep(null);
-                }}
-                className={`text-left px-5 py-4 rounded-xl transition-all border ${
-                  activeDomain === i
-                    ? "bg-navy-700/60 border-navy-500/50 shadow-lg shadow-navy-500/10"
-                    : "bg-transparent border-white/5 hover:bg-navy-800/50 hover:border-white/10"
-                }`}
-              >
-                <span
-                  className={`block text-sm font-semibold ${
-                    activeDomain === i ? "text-white" : "text-gray-300"
-                  }`}
-                >
-                  {d.title}
-                </span>
-                <span className="block text-xs text-gray-500 mt-0.5">
-                  {d.tagline}
-                </span>
-              </button>
-            ))}
+        <div className="grid lg:grid-cols-[1fr_480px] gap-10 items-center">
+          {/* ===== Left: Line-separated Accordion List ===== */}
+          <div className="flex flex-col">
+            {DOMAINS.map((d, i) => {
+              const isOpen = activeDomain === i;
+              return (
+                <div key={d.id}>
+                  {/* Top divider — blue when this item is open */}
+                  <div
+                    className={`h-[2px] transition-colors duration-300 ${
+                      isOpen ? "bg-gray-400" : "bg-gray-200"
+                    }`}
+                  />
+
+                  {/* Accordion header — always on top */}
+                  <button
+                    onClick={() => setActiveDomain(i)}
+                    className="w-full pt-4 pb-2 text-left group"
+                  >
+                    <span
+                      className={`text-base font-semibold transition-colors ${
+                        isOpen ? "text-gray-900" : "text-gray-500 group-hover:text-gray-700"
+                      }`}
+                    >
+                      {d.name}
+                    </span>
+                  </button>
+
+                  {/* Accordion body — always expands below */}
+                  {isOpen && (
+                    <div className="pb-8 animate-[fadeIn_300ms_ease-in-out]">
+                      {/* Value Chain Pills */}
+                      <div className="flex flex-wrap gap-1.5 mb-4">
+                        {d.valueChainSteps.map((step) => (
+                          <span
+                            key={step}
+                            className="px-3 py-1 rounded-full bg-gray-200 border border-gray-300 text-xs text-gray-700"
+                          >
+                            {step}
+                          </span>
+                        ))}
+                      </div>
+                      {/* Solutions */}
+                      <p className="text-sm text-gray-500 leading-relaxed mb-2">{d.headline}</p>
+                      <ul className="flex flex-col gap-1 list-disc list-inside">
+                        {d.solutions.map((sol) => (
+                          <li
+                            key={sol}
+                            className="text-sm text-gray-900"
+                          >
+                            {sol}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+            {/* Bottom closing line */}
+            <div className="h-[2px] bg-gray-200" />
           </div>
 
-          {/* Right — Value chain visualization */}
-          <div className="bg-navy-800/40 border border-white/5 rounded-2xl p-6 sm:p-8 min-h-[420px]">
-            {/* Tagline */}
-            <p className="text-navy-300 text-sm font-medium mb-8">
-              {domain.tagline}
-            </p>
+          {/* ===== Right: Visual Module ===== */}
+          <div className="relative overflow-hidden bg-gray-100 min-h-[560px] p-8 flex flex-col justify-between">
+            {/* Background image */}
+            <img
+              src="/images/domains/hospitals.png"
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover opacity-90"
+            />
 
-            {/* Horizontal stepper */}
-            <div className="relative mb-10">
-              {/* Connecting line */}
-              <div className="absolute top-5 left-0 right-0 h-px bg-navy-600/60" />
+            {/* Subtle gradient for text readability */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30" />
 
-              <div className="relative flex justify-between overflow-x-auto gap-2 pb-2">
-                {domain.chain.map((step, idx) => (
-                  <div
-                    key={step}
-                    className="flex flex-col items-center min-w-[110px] group cursor-default"
-                    onMouseEnter={() => setHoveredStep(idx)}
-                    onMouseLeave={() => setHoveredStep(null)}
-                  >
-                    {/* Node */}
-                    <div
-                      className={`relative z-10 w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200 ${
-                        isStepHighlighted(idx)
-                          ? "bg-navy-500 text-white scale-110 shadow-lg shadow-navy-500/30"
-                          : "bg-navy-700 text-gray-400 group-hover:bg-navy-600"
-                      }`}
-                    >
-                      {idx + 1}
-                    </div>
-                    {/* Label */}
-                    <span
-                      className={`mt-3 text-xs text-center leading-snug transition-colors px-1 ${
-                        isStepHighlighted(idx) ? "text-white" : "text-gray-500"
-                      }`}
-                    >
-                      {step}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            {/* Spacer */}
+            <div className="relative" />
 
-            {/* Product chips */}
-            <div>
-              <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-4">
-                Productized Solutions
+            {/* Description at bottom */}
+            <div className="relative bg-gradient-to-r from-blue-700/25 to-blue-500/15 backdrop-blur-xl rounded-xl p-5">
+              <p className="text-sm text-white/80 leading-relaxed max-w-md">
+                {domain.description}
               </p>
-              <div className="flex flex-wrap gap-2.5">
-                {domain.products.map((p, idx) => (
-                  <button
-                    key={p.name}
-                    onMouseEnter={() => setHoveredChip(idx)}
-                    onMouseLeave={() => setHoveredChip(null)}
-                    className={`px-4 py-2 rounded-lg text-xs font-medium border transition-all duration-200 cursor-default ${
-                      hoveredChip === idx
-                        ? "bg-navy-500/30 border-navy-400/60 text-white shadow-md shadow-navy-500/10"
-                        : hoveredStep !== null &&
-                          p.chainStep === hoveredStep
-                        ? "bg-navy-600/30 border-navy-500/40 text-navy-200"
-                        : "bg-navy-800/60 border-white/5 text-gray-400 hover:text-gray-300 hover:border-white/10"
-                    }`}
-                  >
-                    {p.name}
-                  </button>
-                ))}
-              </div>
             </div>
           </div>
         </div>
@@ -629,9 +698,27 @@ function OutcomeStats() {
 
 function ServicesSection() {
   return (
-    <section className="bg-surface py-24 sm:py-32">
-      <div className="mx-auto max-w-[1320px] px-6">
-        <div className="max-w-2xl mb-16">
+    <section className="relative bg-surface pt-12 sm:pt-16 pb-16 sm:pb-20 overflow-hidden">
+      {/* Background semicircle arcs */}
+      <div className="absolute top-0 left-0 h-full w-1/2 pointer-events-none" style={{ zIndex: 0 }}>
+        <svg
+          className="absolute top-1/2 left-0 -translate-y-1/2 h-[120%] w-auto sm:h-[140%]"
+          viewBox="0 0 400 800"
+          fill="none"
+          preserveAspectRatio="xMinYMid meet"
+        >
+          {/* Middle arc */}
+          <circle cx="0" cy="400" r="280" stroke="rgba(0,0,0,0.025)" strokeWidth="1.5" fill="none" />
+          {/* Inner arc */}
+          <circle cx="0" cy="400" r="180" stroke="rgba(0,0,0,0.02)" strokeWidth="1.5" fill="none" />
+          {/* Subtle fill for depth */}
+          <circle cx="0" cy="400" r="280" fill="rgba(0,0,0,0.006)" />
+          <circle cx="0" cy="400" r="180" fill="rgba(0,0,0,0.004)" />
+        </svg>
+      </div>
+
+      <div className="relative mx-auto max-w-[1320px] px-6" style={{ zIndex: 1 }}>
+        <div className="max-w-2xl mx-auto text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight">
             The Technology Layer of the Ecosystem
           </h2>
@@ -641,28 +728,34 @@ function ServicesSection() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid sm:grid-cols-2 gap-5 max-w-[80%] mx-auto">
           {SERVICE_CARDS.map((card) => (
             <div
               key={card.title}
-              className="group bg-white border border-gray-200/80 rounded-2xl p-8 hover:shadow-lg hover:shadow-gray-200/50 hover:border-gray-300/80 transition-all duration-200"
+              className="glass-card group pl-5 pr-7 py-7 flex flex-col cursor-pointer transition-all duration-200 rounded-xl relative overflow-hidden"
             >
-              {/* Icon placeholder */}
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-navy-500 to-navy-400 mb-5 opacity-80 group-hover:opacity-100 transition-opacity" />
-              <h3 className="text-lg font-bold text-gray-900 leading-snug">
+              {/* Title + One-liner */}
+              <h3 className="relative text-base font-semibold text-blue-600 leading-snug">
                 {card.title}
               </h3>
-              <p className="mt-2 text-sm text-gray-500 leading-relaxed">
-                {card.oneLiner}
-              </p>
-              <ul className="mt-5 space-y-2.5">
+              <p className="relative mt-1.5 text-sm text-gray-500">{card.oneLiner}</p>
+
+              {/* Bullets — single column with dashes */}
+              <div className="relative mt-5 flex flex-col gap-1.5">
                 {card.bullets.map((b) => (
-                  <li key={b} className="flex items-start gap-2.5 text-sm text-gray-700">
-                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-navy-500 shrink-0" />
-                    {b}
-                  </li>
+                  <div key={b.name} className="flex items-center gap-2">
+                    <span className="text-gray-400 shrink-0">–</span>
+                    <span className="text-sm text-gray-700">{b.name}</span>
+                  </div>
                 ))}
-              </ul>
+              </div>
+
+              {/* Arrow */}
+              <div className="relative mt-5 flex justify-end">
+                <svg className="w-5 h-5 text-gray-300 group-hover:text-gray-900 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                </svg>
+              </div>
             </div>
           ))}
         </div>
@@ -800,11 +893,10 @@ function Footer() {
   return (
     <footer className="bg-navy-950 border-t border-white/5 py-8">
       <div className="mx-auto max-w-[1320px] px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-md bg-gradient-to-br from-navy-400 to-navy-300" />
-          <span className="text-white text-sm font-semibold">Netlink</span>
+        <div className="flex items-center">
+          <img src="/netlink-logo.png" alt="Netlink" className="h-8 w-auto brightness-0 invert" />
         </div>
-        <p className="text-gray-500 text-xs">
+        <p className="text-gray-500 text-xs" suppressHydrationWarning>
           &copy; {new Date().getFullYear()} Netlink. All rights reserved.
         </p>
       </div>
@@ -823,7 +915,6 @@ export default function HealthcarePage() {
       <main>
         <Hero />
         <EcosystemMap />
-        <OutcomeStats />
         <ServicesSection />
         <CaseStudiesSection />
         <FinalCTA />
