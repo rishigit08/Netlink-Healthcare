@@ -226,6 +226,7 @@ interface ServiceCard {
   title: string;
   oneLiner: string;
   bullets: ServiceBullet[];
+  icon: string;
 }
 
 const SERVICE_CARDS: ServiceCard[] = [
@@ -237,6 +238,7 @@ const SERVICE_CARDS: ServiceCard[] = [
       { name: "Data Analytics & Business Intelligence", description: "Improves visibility across clinical and operational functions through reliable data insights." },
       { name: "Cybersecurity & Compliance Services", description: "Protects sensitive healthcare data while meeting regulatory and privacy requirements." },
     ],
+    icon: "M300-120q-8.5 0-14.25-5.75T280-140v-130.46q-57-52-88.5-116.89Q160-452.23 160-520.56q0-133.1 93.33-226.27Q346.67-840 480-840q108.08 0 195.35 65.81t113.19 169.96l41.47 164.17q3.99 15.21-5.7 27.64Q814.62-400 798.46-400H720v135.38q0 26.66-18.98 45.64T655.38-200H560v60q0 8.5-5.75 14.25T540-120H300Zm79.09-280.77q35.71 0 60.37-24.38l135.26-135.26q24.51-24.51 24.51-60.22 0-35.71-24.38-60.37-24.66-24.38-60.37-24.38-35.71 0-60.1 24.38-30.84-11.46-61.46-5.23-30.61 6.23-51.77 27.38-21.15 21.16-27.38 51.77-6.23 30.62 5.23 61.46-24.38 24.66-24.38 60.37 0 35.71 24.38 60.1 24.38 24.38 60.09 24.38Z",
   },
   {
     title: "Managed IT & Clinical Systems Operations",
@@ -246,6 +248,7 @@ const SERVICE_CARDS: ServiceCard[] = [
       { name: "EHR / EMR Implementation & Support", description: "Enables consistent care delivery by implementing, integrating, and maintaining clinical record systems." },
       { name: "Ongoing System Optimization", description: "Improves performance and usability as clinical, regulatory, and operational needs evolve." },
     ],
+    icon: "M620-181.54V-260h-95.38q-26.85 0-45.74-18.88Q460-297.77 460-324.62V-660H340v78.46q0 17.62-11.96 29.58Q316.08-540 298.46-540H141.54q-17.62 0-29.58-11.96Q100-563.92 100-581.54v-196.92q0-17.62 11.96-29.58Q123.92-820 141.54-820h156.92q17.62 0 29.58 11.96Q340-796.08 340-778.46V-700h280v-78.46q0-17.62 11.96-29.58Q643.92-820 661.54-820h156.92q17.62 0 29.58 11.96Q860-796.08 860-778.46v196.92q0 17.62-11.96 29.58Q836.08-540 818.46-540H661.54q-17.62 0-29.58-11.96Q620-563.92 620-581.54V-660H500v335.38q0 10.77 6.92 17.7 6.93 6.92 17.7 6.92H620v-78.46q0-17.62 11.96-29.58Q643.92-420 661.54-420h156.92q17.62 0 29.58 11.96Q860-396.08 860-378.46v196.92q0 17.62-11.96 29.58Q836.08-140 818.46-140H661.54q-17.62 0-29.58-11.96Q620-163.92 620-181.54Z",
   },
   {
     title: "Cloud, Platform & Integration Modernization",
@@ -255,6 +258,7 @@ const SERVICE_CARDS: ServiceCard[] = [
       { name: "Interoperability & Integration Services", description: "Connects applications and data across systems to reduce silos and manual work." },
       { name: "Platform & Infrastructure Modernization", description: "Updates legacy platforms to support scale, reliability, and future digital initiatives." },
     ],
+    icon: "M260-200q-74.85 0-127.42-52.23Q80-304.46 80-379.31q0-68.77 47-122.07 47-53.31 116.85-57.24Q257.31-646 324.23-703q66.92-57 155.77-57 100.08 0 170.04 69.96T720-520v40h24.62q57.46 1.85 96.42 42.19Q880-397.46 880-340q0 58.85-40.58 99.42Q798.85-200 740-200H260Z",
   },
   {
     title: "Lifecycle Operations & System Governance",
@@ -264,6 +268,7 @@ const SERVICE_CARDS: ServiceCard[] = [
       { name: "Lifecycle Ownership & Optimization", description: "Manages systems across implementation, scale, upgrades, and long-term evolution." },
       { name: "Governance, Change & Readiness", description: "Establishes controls and operating models that support safe adaptation and sustained outcomes." },
     ],
+    icon: "M438.38-120q-13.92 0-24.19-9.15-10.27-9.16-12.73-22.85l-10.54-83.69q-19.15-5.77-41.42-18.16-22.27-12.38-37.88-26.53L235-247.46q-12.69 5.61-25.77 1.23-13.08-4.39-20.15-16.62l-43.16-74.3q-7.07-12.23-4.15-25.54 2.92-13.31 13.92-21.85l66.85-50q-1.77-10.84-2.92-22.34-1.16-11.5-1.16-22.35 0-10.08 1.16-21.19 1.15-11.12 2.92-25.04l-66.85-50q-11-8.54-13.54-22.23-2.53-13.69 4.54-25.93l42.39-72q7.07-11.46 20.15-16.23 13.08-4.77 25.77.85l75.85 32.15q17.92-14.92 38.77-26.92 20.84-12 40.53-18.54L401.46-808q2.46-13.69 12.73-22.85 10.27-9.15 24.19-9.15h83.24q13.92 0 24.19 9.15 10.27 9.16 12.73 22.85l10.54 84.46q23 8.08 40.65 18.54 17.65 10.46 36.35 26.15L725.77-711q12.69-5.62 25.77-.85 13.08 4.77 20.15 16.23l42.39 72.77q7.07 12.23 4.15 25.54-2.92 13.31-13.92 21.85l-69.93 52.31q3.31 12.38 3.7 22.73.38 10.34.38 20.42 0 9.31-.77 19.65-.77 10.35-3.54 25.04l67.62 50.77q11 8.54 14.31 21.85 3.3 13.31-3.77 25.54l-42.62 73.53q-7.07 12.24-20.54 16.62-13.46 4.38-26.15-1.23l-76.92-32.92q-18.7 15.69-37.62 26.92-18.92 11.23-39.38 17.77L558.54-152q-2.46 13.69-12.73 22.85-10.27 9.15-24.19 9.15h-83.24Zm40.54-260q41.85 0 70.93-29.08 29.07-29.07 29.07-70.92t-29.07-70.92Q520.77-580 478.92-580q-42.07 0-71.04 29.08-28.96 29.07-28.96 70.92t28.96 70.92Q436.85-380 478.92-380Z",
   },
 ];
 
@@ -309,15 +314,46 @@ const OTHER_INDUSTRIES: { name: string; icon: string }[] = [
 
 /* ---------- Nav links ---------- */
 
+interface ServiceDropdownItem {
+  title: string;
+  description: string;
+}
+
+const SERVICES_DROPDOWN: ServiceDropdownItem[] = [
+  {
+    title: "Infrastructure & Cloud",
+    description: "When demand shifts, system is able to absorb AI scale without re-architecture.",
+  },
+  {
+    title: "ERP & Core Platforms",
+    description: "Decisions move when intelligence is part of core systems where execution happens.",
+  },
+  {
+    title: "Data & Intelligence",
+    description: "Data unified across enterprise systems enables intelligence that is efficient and adaptive.",
+  },
+  {
+    title: "Agentic Applications & Workflows",
+    description: "Enabling faster product scale by embedding intelligence into workflows from the start.",
+  },
+  {
+    title: "Automation & Orchestration",
+    description: "Netlink builds context-aware automation that adapts to changing conditions.",
+  },
+  {
+    title: "Security & Governance",
+    description: "Security-driven governance to keep intelligent systems compliant and protected.",
+  },
+];
+
 interface NavLink {
   label: string;
   hasDropdown?: boolean;
 }
 
 const NAV_LINKS: NavLink[] = [
-  { label: "Home" },
   { label: "Services", hasDropdown: true },
-  { label: "Platform And Products", hasDropdown: true },
+  { label: "Industries", hasDropdown: true },
   { label: "Partnerships", hasDropdown: true },
   { label: "About Us", hasDropdown: true },
   { label: "Careers", hasDropdown: true },
@@ -339,6 +375,16 @@ function ChevronDown() {
 
 function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
+  const servicesTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  const handleServicesEnter = () => {
+    if (servicesTimeout.current) clearTimeout(servicesTimeout.current);
+    setServicesOpen(true);
+  };
+  const handleServicesLeave = () => {
+    servicesTimeout.current = setTimeout(() => setServicesOpen(false), 200);
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200/60">
@@ -355,14 +401,56 @@ function Navbar() {
         {/* Desktop links */}
         <div className="hidden lg:flex items-center gap-1">
           {NAV_LINKS.map((link) => (
-            <a
-              key={link.label}
-              href="#"
-              className="flex items-center px-3.5 py-2 text-sm text-gray-600 hover:text-gray-900 transition-colors rounded-md"
-            >
-              {link.label}
-              {link.hasDropdown && <ChevronDown />}
-            </a>
+            link.label === "Services" ? (
+              <div
+                key={link.label}
+                className="relative"
+                onMouseEnter={handleServicesEnter}
+                onMouseLeave={handleServicesLeave}
+              >
+                <a
+                  href="#"
+                  className={`flex items-center px-3.5 py-2 text-sm transition-colors rounded-md ${
+                    servicesOpen ? "text-gray-900" : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  {link.label}
+                  <ChevronDown />
+                </a>
+                {/* Services Dropdown */}
+                {servicesOpen && (
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2" style={{ width: "580px" }}>
+                    <div className="bg-white rounded-xl border border-gray-200/80 shadow-xl shadow-gray-200/50 p-5">
+                      <div className="grid grid-cols-2 gap-x-5 gap-y-4">
+                        {SERVICES_DROPDOWN.map((item) => (
+                          <a
+                            key={item.title}
+                            href="#"
+                            className="group/item flex flex-col gap-1 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                          >
+                            <span className="text-sm font-semibold text-gray-900 group-hover/item:text-navy-600 transition-colors">
+                              {item.title}
+                            </span>
+                            <span className="text-xs text-gray-500 leading-relaxed">
+                              {item.description}
+                            </span>
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <a
+                key={link.label}
+                href="#"
+                className="flex items-center px-3.5 py-2 text-sm text-gray-600 hover:text-gray-900 transition-colors rounded-md"
+              >
+                {link.label}
+                {link.hasDropdown && <ChevronDown />}
+              </a>
+            )
           ))}
         </div>
 
@@ -543,7 +631,7 @@ function Hero() {
         <div className="mx-auto max-w-[1320px] px-6 py-5 flex flex-wrap items-center justify-center gap-8 sm:gap-16">
           {OUTCOME_STATS.map((s) => (
             <div key={s.value} className="flex flex-col items-center">
-              <span className="text-2xl font-bold text-gray-900">{s.value}</span>
+              <span className="text-3xl font-bold text-blue-600">{s.value}</span>
               <span className="text-sm text-gray-500 capitalize">{s.label}</span>
             </div>
           ))}
@@ -609,7 +697,7 @@ function EcosystemMap() {
                         {d.valueChainSteps.map((step) => (
                           <span
                             key={step}
-                            className="px-3 py-1 rounded-full bg-gray-200 border border-gray-300 text-xs text-gray-700"
+                            className="px-3 py-1 rounded-full bg-gray-200/50 border border-gray-300/50 text-xs text-gray-700"
                           >
                             {step}
                           </span>
@@ -978,7 +1066,7 @@ function FinalCTA() {
 
           <div className="relative">
             <h2 className="text-xl sm:text-2xl lg:text-[1.9rem] font-extrabold text-gray-900 leading-tight max-w-2xl mx-auto">
-              Ready to make your systems think together?
+              Ready to Design the Future of Connected Health?
             </h2>
 
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
@@ -1069,7 +1157,6 @@ export default function HealthcarePage() {
         <EcosystemMap />
         <ServicesSection />
         <CaseStudiesSection />
-        <PhilosophySection />
         <FinalCTA />
       </main>
       <Footer />
