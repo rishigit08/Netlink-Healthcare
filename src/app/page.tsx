@@ -272,6 +272,7 @@ const SERVICE_CARDS: ServiceCard[] = [
 interface CaseStudy {
   title: string;
   tags: string[];
+  imageSrc?: string;
 }
 
 const CASE_STUDIES: CaseStudy[] = [
@@ -279,16 +280,19 @@ const CASE_STUDIES: CaseStudy[] = [
     title:
       "Reduced behavioral-health recidivism through predictive intelligence",
     tags: ["Healthcare", "Analytics", "AI"],
+    imageSrc: "/images/case-studies/healthcare-visual.png",
   },
   {
     title:
       "Enabled real-time nutrition research insights for infants and young children",
     tags: ["Healthcare", "Research", "Data"],
+    imageSrc: "/images/case-studies/vr-healthcare.png",
   },
   {
     title:
       "Automated routine patient queries with conversational intelligence",
     tags: ["Healthcare", "Automation", "NLP"],
+    imageSrc: "/images/case-studies/pills-gold.png",
   },
 ];
 
@@ -699,8 +703,23 @@ function OutcomeStats() {
 function ServicesSection() {
   return (
     <section className="relative bg-surface pt-12 sm:pt-16 pb-16 sm:pb-20 overflow-hidden">
-      {/* Background semicircle arcs */}
-      <div className="absolute top-0 left-0 h-full w-1/2 pointer-events-none" style={{ zIndex: 0 }}>
+      {/* Background glow + semicircle arcs */}
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+        {/* Dark blue radial glow from left */}
+        <div
+          className="absolute top-1/2 -translate-y-1/2 -left-[10%] w-[80%] h-[120%] opacity-[0.18]"
+          style={{
+            background: "radial-gradient(ellipse at 0% 50%, rgba(15,29,50,0.5) 0%, rgba(30,58,95,0.35) 30%, rgba(37,99,235,0.2) 55%, transparent 80%)",
+          }}
+        />
+        {/* Subtle secondary dark blue wash */}
+        <div
+          className="absolute top-1/2 -translate-y-1/2 -left-[5%] w-[60%] h-[90%] opacity-[0.12]"
+          style={{
+            background: "radial-gradient(ellipse at 10% 50%, rgba(11,22,38,0.6) 0%, rgba(30,58,95,0.25) 40%, transparent 70%)",
+          }}
+        />
+        {/* Semicircle arcs */}
         <svg
           className="absolute top-1/2 left-0 -translate-y-1/2 h-[120%] w-auto sm:h-[140%]"
           viewBox="0 0 400 800"
@@ -708,12 +727,12 @@ function ServicesSection() {
           preserveAspectRatio="xMinYMid meet"
         >
           {/* Middle arc */}
-          <circle cx="0" cy="400" r="280" stroke="rgba(0,0,0,0.025)" strokeWidth="1.5" fill="none" />
+          <circle cx="0" cy="400" r="280" stroke="none" fill="none" />
           {/* Inner arc */}
-          <circle cx="0" cy="400" r="180" stroke="rgba(0,0,0,0.02)" strokeWidth="1.5" fill="none" />
-          {/* Subtle fill for depth */}
-          <circle cx="0" cy="400" r="280" fill="rgba(0,0,0,0.006)" />
-          <circle cx="0" cy="400" r="180" fill="rgba(0,0,0,0.004)" />
+          <circle cx="0" cy="400" r="180" stroke="none" fill="none" />
+          {/* Subtle tinted fill for depth */}
+          <circle cx="0" cy="400" r="280" fill="rgba(30,58,95,0.015)" />
+          <circle cx="0" cy="400" r="180" fill="rgba(15,29,50,0.01)" />
         </svg>
       </div>
 
@@ -768,7 +787,7 @@ function ServicesSection() {
 
 function CaseStudiesSection() {
   return (
-    <section className="bg-white py-24 sm:py-32">
+    <section className="bg-white py-12 sm:py-16">
       <div className="mx-auto max-w-[1320px] px-6">
         {/* Part A — Case Studies */}
         <div className="max-w-2xl mb-14">
@@ -788,6 +807,11 @@ function CaseStudiesSection() {
             >
               {/* Image placeholder */}
               <div className="h-48 bg-gradient-to-br from-navy-800 to-navy-600 relative">
+                <img
+                  alt=""
+                  className="absolute inset-0 w-full h-full object-cover opacity-80"
+                  src={cs.imageSrc ?? "/images/case-studies/healthcare-visual.png"}
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy-900/40 to-transparent" />
               </div>
               <div className="p-6">
@@ -826,9 +850,9 @@ function CaseStudiesSection() {
                 key={ind.name}
                 className="flex items-center gap-3 py-4 px-4 rounded-xl border border-gray-200/80 bg-surface text-sm font-semibold text-gray-700 hover:border-navy-300/60 hover:text-navy-600 transition-colors"
               >
-                <div className="w-9 h-9 rounded-lg bg-navy-100/60 flex items-center justify-center shrink-0">
-                  <svg className="w-5 h-5 text-navy-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={ind.icon} />
+                <div className="w-9 h-9 rounded-lg bg-navy-500 flex items-center justify-center shrink-0">
+                  <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d={ind.icon} />
                   </svg>
                 </div>
                 {ind.name}
