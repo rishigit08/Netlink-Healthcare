@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 /* ==========================================================================
    DATA — Editable arrays/objects for every section
@@ -292,15 +292,15 @@ const CASE_STUDIES: CaseStudy[] = [
   },
 ];
 
-const OTHER_INDUSTRIES = [
-  "Government",
-  "Automotive",
-  "Banking",
-  "Insurance",
-  "Manufacturing",
-  "Supply Chain",
-  "Telecom",
-  "BPO",
+const OTHER_INDUSTRIES: { name: string; icon: string }[] = [
+  { name: "Government", icon: "M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" },
+  { name: "Automotive", icon: "M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" },
+  { name: "Banking", icon: "M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" },
+  { name: "Insurance", icon: "M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" },
+  { name: "Manufacturing", icon: "M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085" },
+  { name: "Supply Chain", icon: "M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25m-2.25 0h2.25M6.75 18.75v-6h4.5m0 0v-3.75m0 3.75h4.5V7.5" },
+  { name: "Telecom", icon: "M8.288 15.038a5.25 5.25 0 017.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0M12.53 18.22l-.53.53-.53-.53a.75.75 0 011.06 0z" },
+  { name: "BPO", icon: "M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" },
 ];
 
 /* ---------- Nav links ---------- */
@@ -556,7 +556,7 @@ function EcosystemMap() {
   const domain = DOMAINS[activeDomain];
 
   return (
-    <section id="ecosystem" className="relative bg-[#F5F7FA] pt-10 sm:pt-14 pb-14 sm:pb-20 mt-[30px]">
+    <section id="ecosystem" className="relative bg-blue-50/60 pt-10 sm:pt-14 pb-14 sm:pb-20 mt-[30px]">
       <div className="mx-auto max-w-[1320px] px-6">
         {/* Header */}
         <div className="max-w-2xl mx-auto text-center mb-10">
@@ -636,8 +636,8 @@ function EcosystemMap() {
           <div className="relative overflow-hidden bg-gray-100 min-h-[560px] p-8 flex flex-col justify-between">
             {/* Background image */}
             <img
-              src="/images/domains/hospitals.png"
-              alt=""
+              src={domain.imageSrc}
+              alt={domain.name}
               className="absolute inset-0 w-full h-full object-cover opacity-90"
             />
 
@@ -648,8 +648,8 @@ function EcosystemMap() {
             <div className="relative" />
 
             {/* Description at bottom */}
-            <div className="relative bg-gradient-to-r from-blue-700/25 to-blue-500/15 backdrop-blur-xl rounded-xl p-5">
-              <p className="text-sm text-white/80 leading-relaxed max-w-md">
+            <div className="relative bg-gradient-to-r from-blue-700/45 to-blue-500/35 backdrop-blur-xl rounded-xl p-5">
+              <p className="text-sm text-white/80 leading-relaxed max-w-md capitalize">
                 {domain.description}
               </p>
             </div>
@@ -823,13 +823,107 @@ function CaseStudiesSection() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {OTHER_INDUSTRIES.map((ind) => (
               <div
-                key={ind}
-                className="flex items-center justify-center py-5 px-4 rounded-xl border border-gray-200/80 bg-surface text-sm font-semibold text-gray-700 hover:border-navy-300/60 hover:text-navy-600 transition-colors"
+                key={ind.name}
+                className="flex items-center gap-3 py-4 px-4 rounded-xl border border-gray-200/80 bg-surface text-sm font-semibold text-gray-700 hover:border-navy-300/60 hover:text-navy-600 transition-colors"
               >
-                {ind}
+                <div className="w-9 h-9 rounded-lg bg-navy-100/60 flex items-center justify-center shrink-0">
+                  <svg className="w-5 h-5 text-navy-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={ind.icon} />
+                  </svg>
+                </div>
+                {ind.name}
               </div>
             ))}
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---- CountUp hook ---- */
+
+function useCountUp(end: number, duration: number = 2000, trigger: boolean = true) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!trigger) return;
+    let start = 0;
+    const startTime = performance.now();
+
+    function step(now: number) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.round(eased * end);
+      setCount(current);
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      }
+    }
+    requestAnimationFrame(step);
+  }, [end, duration, trigger]);
+
+  return count;
+}
+
+function CountUpStat({ value, label }: { value: string; label: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Parse numeric part and suffix (e.g. "200+" -> 200, "+")
+  const numMatch = value.match(/^(\d+)(.*)$/);
+  const numericEnd = numMatch ? parseInt(numMatch[1], 10) : 0;
+  const suffix = numMatch ? numMatch[2] : "";
+  const animatedCount = useCountUp(numericEnd, 2000, visible);
+
+  return (
+    <div ref={ref} className="px-10 sm:px-16 text-center">
+      <span className="block text-4xl sm:text-5xl font-extrabold text-navy-900 tracking-tight">
+        {visible ? animatedCount : 0}{suffix}
+      </span>
+      <span className="block mt-2 text-xs uppercase tracking-[0.15em] text-gray-500 font-medium">
+        {label}
+      </span>
+    </div>
+  );
+}
+
+/* ---- Philosophy + Trust Stats ---- */
+
+function PhilosophySection() {
+  return (
+    <section className="bg-white pt-8 sm:pt-12 pb-8 sm:pb-12">
+      <div className="mx-auto max-w-[1320px] px-6 text-center">
+        <p className="text-xs uppercase tracking-[0.2em] text-blue-600 font-semibold mb-6">
+          Our Philosophy
+        </p>
+        <p className="text-2xl sm:text-3xl font-bold text-gray-900 leading-snug max-w-3xl mx-auto">
+          &ldquo;Systems thinking is the strategy. AI is the engine. Netlink is the integrator.&rdquo;
+        </p>
+
+        {/* Trust Stats */}
+        <div className="mt-14 flex flex-wrap items-start justify-center divide-x divide-gray-200">
+          {TRUST_STATS.map((s) => (
+            <CountUpStat key={s.label} value={s.value} label={s.label} />
+          ))}
         </div>
       </div>
     </section>
@@ -840,47 +934,36 @@ function CaseStudiesSection() {
 
 function FinalCTA() {
   return (
-    <section
-      id="contact"
-      className="relative bg-gradient-to-b from-navy-900 to-navy-950 py-24 sm:py-32 overflow-hidden"
-    >
-      {/* Subtle glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-navy-500/[0.06] blur-[100px] rounded-full" />
-      </div>
+    <section id="contact" className="bg-white pt-8 sm:pt-12 pb-8 sm:pb-12">
+      <div className="mx-auto max-w-[1320px] px-6">
+        {/* CTA Card */}
+        <div className="relative bg-[#F5F7FA] rounded-3xl px-8 py-11 sm:py-14 text-center overflow-hidden">
+          {/* Subtle decorative arcs */}
+          <svg className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-[0.03]" viewBox="0 0 1200 400" fill="none" preserveAspectRatio="xMidYMid slice">
+            <circle cx="200" cy="400" r="350" stroke="currentColor" strokeWidth="1" />
+            <circle cx="1000" cy="0" r="300" stroke="currentColor" strokeWidth="1" />
+          </svg>
 
-      <div className="relative mx-auto max-w-[1320px] px-6 text-center">
-        {/* Company stats */}
-        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 mb-10">
-          {TRUST_STATS.map((s) => (
-            <div
-              key={s.label}
-              className="px-6 py-3 rounded-full border border-white/10 bg-white/5"
-            >
-              <span className="font-bold text-white">{s.value}</span>{" "}
-              <span className="text-gray-400 text-sm">{s.label}</span>
+          <div className="relative">
+            <h2 className="text-xl sm:text-2xl lg:text-[1.9rem] font-extrabold text-gray-900 leading-tight max-w-2xl mx-auto">
+              Ready to make your systems think together?
+            </h2>
+
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+              <a
+                href="#contact"
+                className="inline-flex items-center px-7 py-3.5 rounded-lg bg-navy-500 hover:bg-navy-400 text-white font-semibold transition-colors text-sm"
+              >
+                Let&apos;s talk
+              </a>
+              <a
+                href="#ecosystem"
+                className="inline-flex items-center px-7 py-3.5 rounded-lg border border-gray-300 hover:border-gray-400 text-gray-700 font-semibold transition-colors text-sm bg-white"
+              >
+                Explore services
+              </a>
             </div>
-          ))}
-        </div>
-
-        <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed mb-4">
-          Systems thinking is the strategy. AI is the engine.{" "}
-          <span className="text-white font-semibold">
-            Netlink is the integrator.
-          </span>
-        </p>
-
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight max-w-3xl mx-auto mt-8">
-          Ready to make your systems think together?
-        </h2>
-
-        <div className="mt-10">
-          <a
-            href="#contact"
-            className="inline-flex items-center px-8 py-4 rounded-lg bg-navy-500 hover:bg-navy-400 text-white font-semibold transition-colors text-base"
-          >
-            Let&apos;s Talk
-          </a>
+          </div>
         </div>
       </div>
     </section>
@@ -889,16 +972,53 @@ function FinalCTA() {
 
 /* ---- Footer ---- */
 
+const FOOTER_LINKS = {
+  Company: ["About", "Leadership", "Careers", "Contact"],
+  Services: ["Decision Intelligence", "Product Engineering", "ERP & Platforms", "Automation", "Cloud & Infrastructure", "Governance"],
+  Industries: ["Healthcare", "Insurance", "Automotive", "Manufacturing", "Supply Chain"],
+  Resources: ["Case Studies", "Blog", "Point of View"],
+};
+
 function Footer() {
   return (
-    <footer className="bg-navy-950 border-t border-white/5 py-8">
-      <div className="mx-auto max-w-[1320px] px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center">
-          <img src="/netlink-logo.png" alt="Netlink" className="h-8 w-auto brightness-0 invert" />
+    <footer className="bg-white border-t border-gray-200/60 pt-16 pb-10">
+      <div className="mx-auto max-w-[1320px] px-6">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-10">
+          {/* Logo + Tagline */}
+          <div className="col-span-2 md:col-span-1">
+            <img src="/netlink-logo.png" alt="Netlink" className="h-10 w-auto mb-4" />
+            <p className="text-sm text-gray-500 leading-relaxed max-w-[200px]">
+              Engineering AI-first enterprises. Breaking silos. Connecting systems. Driving tangible outcomes.
+            </p>
+          </div>
+
+          {/* Link columns */}
+          {Object.entries(FOOTER_LINKS).map(([heading, links]) => (
+            <div key={heading}>
+              <h4 className="text-sm font-semibold text-gray-900 mb-4 uppercase tracking-wider">{heading}</h4>
+              <ul className="space-y-2.5">
+                {links.map((link) => (
+                  <li key={link}>
+                    <a href="#" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
+                      {link}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
-        <p className="text-gray-500 text-xs" suppressHydrationWarning>
-          &copy; {new Date().getFullYear()} Netlink. All rights reserved.
-        </p>
+
+        {/* Bottom bar */}
+        <div className="mt-12 pt-6 border-t border-gray-200/60 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-gray-400 text-xs" suppressHydrationWarning>
+            &copy; {new Date().getFullYear()} Netlink. All rights reserved.
+          </p>
+          <div className="flex items-center gap-6">
+            <a href="#" className="text-xs text-gray-400 hover:text-gray-600 transition-colors">Privacy Policy</a>
+            <a href="#" className="text-xs text-gray-400 hover:text-gray-600 transition-colors">Terms of Service</a>
+          </div>
+        </div>
       </div>
     </footer>
   );
@@ -917,6 +1037,7 @@ export default function HealthcarePage() {
         <EcosystemMap />
         <ServicesSection />
         <CaseStudiesSection />
+        <PhilosophySection />
         <FinalCTA />
       </main>
       <Footer />
