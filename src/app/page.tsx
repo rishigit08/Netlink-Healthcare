@@ -1094,7 +1094,7 @@ function FinalCTA() {
 
 const FOOTER_LINKS = {
   Company: ["About", "Leadership", "Careers", "Contact"],
-  Services: ["Decision Intelligence", "Product Engineering", "ERP & Platforms", "Automation", "Cloud & Infrastructure", "Governance"],
+  Services: ["Infrastructure & Cloud", "ERP & Core Platforms", "Data & Intelligence", "Agentic Applications & Workflows", "Automation & Orchestration", "Security & Governance"],
   Industries: ["Healthcare", "Insurance", "Automotive", "Manufacturing", "Supply Chain"],
   Resources: ["Case Studies", "Blog", "Point of View"],
 };
